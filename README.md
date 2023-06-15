@@ -31,7 +31,7 @@ riverctl map normal Super SPACE send-layout-cmd luatile "cycle_layout()"
 riverctl map normal Super+Shift SPACE send-layout-cmd luatile "cycle_layout(true)" # reverse
 ```
 
-These are just example, all available functions are listed in the Table below.
+These are just examples, all available functions are listed in the Table below.
 
 ### Functions
 
