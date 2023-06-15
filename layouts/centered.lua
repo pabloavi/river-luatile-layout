@@ -116,6 +116,13 @@ M.handle_layout = function(args)
 			end
 		end
 	end
+
+	if REVERSE then
+		-- mirror the layout with respect to the center of the screen (x axis)
+		for _, v in ipairs(retval) do
+			v[1] = args.width - v[1] - v[3]
+		end
+	end
 	return retval
 end
 

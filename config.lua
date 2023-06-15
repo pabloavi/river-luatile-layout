@@ -11,6 +11,7 @@ M.load = function(args)
 		SMART_GAPS = true,
 		MAIN_COUNT = 2,
 		PREFER_HORIZONTAL = false,
+		REVERSE = false,
 	}
 	-- convert all values in fallback to globals
 	for k, v in pairs(fallback) do

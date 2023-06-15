@@ -124,7 +124,7 @@ It is important to note that all variables are parsed to Lua as global variables
 
 - [ ] Finish `README.md`
 - [ ] Add support for `MAIN_COUNT` in `bspwm` layout.
-- [ ] Add reverse options for `bspwm` layout and `centered`.
+- [x] Add reverse options for `bspwm` layout and `centered`.
 - [ ] Improve `centered` split when there are less windows than `MAIN_COUNT`.
 - [ ] Refactor `bspwm` layout, as it is dirty (even though it perfectly works).
 - [ ] Add full support of `INNER_GAPS` and `OUTER_GAPS`.

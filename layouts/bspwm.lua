@@ -88,6 +88,12 @@ local function handle_layout(args)
 			})
 		end
 	end
+
+	if REVERSE then
+		for _, v in ipairs(retval) do
+			v[1] = args.width - v[1] - v[3]
+		end
+	end
 	return retval
 end
 
