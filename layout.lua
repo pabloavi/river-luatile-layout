@@ -52,11 +52,6 @@ function cycle_layout(prev)
 	local prev_layout = nil
 	local found = false
 
-	local layout_names = {}
-	for layout, _ in pairs(layouts) do
-		table.insert(layout_names, layout)
-	end
-
 	-- go through all layouts and find the next one (latest cycles back to first)
 	for i, layout in ipairs(layout_names) do
 		if found then
@@ -83,12 +78,6 @@ function cycle_layout(prev)
 end
 
 function list_layouts()
-	local layout_names = {}
-	for layout, _ in pairs(layouts) do
-		table.insert(layout_names, layout)
-	end
-	-- order them alphabetically
-	table.sort(layout_names)
 	-- print to /tmp/river_layouts
 	string = table.concat(layout_names, "\n")
 	os.execute("echo '" .. string .. "' > /tmp/river_layouts")
@@ -102,6 +91,12 @@ layouts = {
 	monocle = require("layouts.monocle"),
 	grid = require("layouts.grid").handle_layout,
 }
+
+layout_names = {}
+for layout, _ in pairs(layouts) do
+	table.insert(layout_names, layout)
+end
+table.sort(layout_names)
 
 -- require functions from the layout file
 -- print(output_layouts["eDP-1"])
