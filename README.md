@@ -102,23 +102,47 @@ It is important to note that all variables are parsed to Lua as global variables
 
 <!-- Add images -->
 
-### Dwindle (BSPWM-like)
+### BSPWM (dwindle)
 
-### Rivertile
-
-<!-- Add credits -->
-
-### Rivertile-simple
-
-<!-- Add credits (default of river-luatile) -->
+Default             |  Reverse
+:-------------------------:|:-------------------------:
+![bspwm](https://github.com/pabloavi/river-luatile-layout/assets/107482263/0734cff2-2cab-4446-ba9c-718f14500f78) | ![bspwm_reverse](https://github.com/pabloavi/river-luatile-layout/assets/107482263/bcfea75c-77f6-4026-91e8-98308c8eba32)
 
 ### Centered
+
+Default             |  Reverse
+:-------------------------:|:-------------------------:
+![centered](https://github.com/pabloavi/river-luatile-layout/assets/107482263/5d5ebd1a-ad08-4fb0-ae11-4d4413306fca) |  ![centered_2_reverse](https://github.com/pabloavi/river-luatile-layout/assets/107482263/73cf625e-b04e-444d-8223-a786917cca78)
+
+### Grid
+
+Prefer horizontal             | Prefer vertical
+:-------------------------:|:-------------------------:
+![grid_horizontal](https://github.com/pabloavi/river-luatile-layout/assets/107482263/e18c71ff-10a2-4b4e-a156-9f7075041466) | ![grid_vertical](https://github.com/pabloavi/river-luatile-layout/assets/107482263/c60fdc59-0769-4ebf-89eb-46af9119ebc7)
 
 ### Monocle
 
 <!-- Add credits -->
 
-### Grid
+![monocle](https://github.com/pabloavi/river-luatile-layout/assets/107482263/581bb092-1adc-4c82-92a9-eb66e5ba1bdc)
+
+### Rivertile
+
+<!-- Add credits -->
+
+![rivertile](https://github.com/pabloavi/river-luatile-layout/assets/107482263/fe533da4-22f7-4bc5-8779-659dd6093b63)
+
+### Rivertile-simple
+
+<!-- Add credits (default of river-luatile) -->
+
+![rivertile_simple](https://github.com/pabloavi/river-luatile-layout/assets/107482263/2c7cb6d0-779e-4434-bf50-21e2373bc2cb)
+
+### Tabbed (although no tab)
+
+View 1 & 2             | View 1 & 4
+:-------------------------:|:-------------------------:
+![tabbed](https://github.com/pabloavi/river-luatile-layout/assets/107482263/a4658dd6-d38a-41bf-95ec-917df2e12733) | ![tabbed_2](https://github.com/pabloavi/river-luatile-layout/assets/107482263/6d1b1283-5c02-44ad-b19a-3a9b4a8bf292)
 
 ## TODO
 

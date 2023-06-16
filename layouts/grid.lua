@@ -41,7 +41,7 @@ M.handle_layout = function(args)
 		if SMART_GAPS then
 			table.insert(retval, { 0, 0, args.width, args.height })
 		else
-			table.insert(retval, { GAPS, GAPS, args.width - GAPS * 2, args.height - GAPS * 2 })
+			table.insert(retval, { OUTER_GAPS, OUTER_GAPS, args.width - OUTER_GAPS * 2, args.height - OUTER_GAPS * 2 })
 		end
 	elseif args.count > 1 then
 		local n = math.ceil(math.sqrt(args.count))

@@ -1,12 +1,13 @@
+-- TODO: fix INNER_GAPS when OUTER_GAPS = 0 and more windows than MAIN_COUNT
 local M = {}
 
 local utils = require("layouts.utils")
 
-local outer_gap = GAPS / 2
-local inner_gap = GAPS / 2
 local location_horizontal = "left"
 local location_vertical = "top"
 local count = 0
+local OUTER_GAPS = OUTER_GAPS / 2
+local INNER_GAPS = INNER_GAPS / 2
 
 --- Layout generator
 --@param args: table{width, height, count, tags}
@@ -27,16 +28,13 @@ M.handle_layout = function(args)
 		if SMART_GAPS then
 			table.insert(layout, { 0, 0, args.width, args.height })
 		else
-			table.insert(layout, { GAPS, GAPS, args.width - GAPS * 2, args.height - GAPS * 2 })
+			table.insert(layout, { OUTER_GAPS, OUTER_GAPS, args.width - OUTER_GAPS * 2, args.height - OUTER_GAPS * 2 })
 		end
 	elseif args.count <= windows then
-		local main_w = (args.width - GAPS * 2)
-		local side_w = (args.width - GAPS * 3) - main_w
-		local main_h = args.height - GAPS * 2
-		local side_h = (args.height - GAPS) / (args.count - 1) - GAPS
+		local main_w = (args.width - OUTER_GAPS * 2)
 		for i = 1, windows do
 			table.insert(layout, {
-				GAPS,
+				OUTER_GAPS,
 				y_of_i(windows, i),
 				main_w,
 				height_for_n(windows),
@@ -56,11 +54,11 @@ M.handle_layout = function(args)
 		end
 
 		if location == "left" or location == "right" then
-			usable_width = args.width - (2 * outer_gap)
-			usable_height = args.height - (2 * outer_gap)
+			usable_width = args.width - (2 * OUTER_GAPS)
+			usable_height = args.height - (2 * OUTER_GAPS)
 		else
-			usable_width = args.height - (2 * outer_gap)
-			usable_height = args.width - (2 * outer_gap)
+			usable_width = args.height - (2 * OUTER_GAPS)
+			usable_height = args.width - (2 * OUTER_GAPS)
 		end
 
 		local main_width, main_height, main_height_rem
@@ -101,37 +99,37 @@ M.handle_layout = function(args)
 				height = secondary_heigth + (i == MAIN_COUNT and { secondary_height_rem } or { 0 })[1]
 			end
 
-			x = x + inner_gap
-			y = y + inner_gap
-			width = width - (2 * inner_gap)
-			height = height - (2 * inner_gap)
+			x = x + INNER_GAPS
+			y = y + INNER_GAPS
+			width = width - (2 * INNER_GAPS)
+			height = height - (2 * INNER_GAPS)
 
 			-- set depending on location
 			if location == "left" then
 				table.insert(layout, {
-					x + outer_gap,
-					y + outer_gap,
+					x + OUTER_GAPS,
+					y + OUTER_GAPS,
 					width,
 					height,
 				})
 			elseif location == "right" then
 				table.insert(layout, {
-					usable_width - width - x + outer_gap,
-					y + outer_gap,
+					usable_width - width - x + OUTER_GAPS,
+					y + OUTER_GAPS,
 					width,
 					height,
 				})
 			elseif location == "top" then
 				table.insert(layout, {
-					y + outer_gap,
-					x + outer_gap,
+					y + OUTER_GAPS,
+					x + OUTER_GAPS,
 					height,
 					width,
 				})
 			else
 				table.insert(layout, {
-					y + outer_gap,
-					usable_width - width - x + outer_gap,
+					y + OUTER_GAPS,
+					usable_width - width - x + OUTER_GAPS,
 					height,
 					width,
 				})

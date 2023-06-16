@@ -11,14 +11,14 @@ M.handle_layout = function(args)
 		if SMART_GAPS then
 			table.insert(retval, { 0, 0, args.width, args.height })
 		else
-			table.insert(retval, { GAPS, GAPS, args.width - GAPS * 2, args.height - GAPS * 2 })
+			table.insert(retval, { OUTER_GAPS, OUTER_GAPS, args.width - OUTER_GAPS * 2, args.height - OUTER_GAPS * 2 })
 		end
 	elseif args.count > 1 then
-		local main_w = (args.width - GAPS * 3) * MAIN_RATIO
-		local main_h = args.height - GAPS * 2
+		local main_w = (args.width - OUTER_GAPS * 2 - INNER_GAPS) * MAIN_RATIO
+		local main_h = args.height - OUTER_GAPS * 2
 		table.insert(retval, {
-			GAPS,
-			GAPS,
+			OUTER_GAPS,
+			OUTER_GAPS,
 			main_w,
 			main_h,
 		})
@@ -38,7 +38,7 @@ M.handle_layout = function(args)
 				if i == args.count then
 					w = retval[i - 1][3]
 				else
-					w = (retval[i - 1][3] - GAPS) * MAIN_RATIO
+					w = (retval[i - 1][3] - INNER_GAPS) * MAIN_RATIO
 				end
 			end
 
@@ -55,7 +55,7 @@ M.handle_layout = function(args)
 				if i == args.count then
 					h = retval[i - 1][4]
 				else
-					h = (args.height - 3 * GAPS) * MAIN_RATIO
+					h = (args.height - 2 * OUTER_GAPS - INNER_GAPS) * MAIN_RATIO
 				end
 			else
 				if isOdd then
@@ -64,7 +64,7 @@ M.handle_layout = function(args)
 					if i == args.count then
 						h = retval[i - 1][4]
 					else
-						h = (retval[i - 1][4] - GAPS) * MAIN_RATIO
+						h = (retval[i - 1][4] - INNER_GAPS) * MAIN_RATIO
 					end
 				end
 			end
@@ -73,7 +73,7 @@ M.handle_layout = function(args)
 			-- if it is even, x = previous window's x + previous window's width + gaps
 			-- if it is odd, x = previous window's x
 			if isEven then
-				x = retval[i - 1][1] + retval[i - 1][3] + GAPS
+				x = retval[i - 1][1] + retval[i - 1][3] + INNER_GAPS
 			else
 				x = retval[i - 1][1]
 			end
@@ -84,7 +84,7 @@ M.handle_layout = function(args)
 			if isEven then
 				y = retval[i - 1][2]
 			else
-				y = retval[i - 1][2] + retval[i - 1][4] + GAPS
+				y = retval[i - 1][2] + retval[i - 1][4] + INNER_GAPS
 			end
 
 			table.insert(retval, {

@@ -5,10 +5,10 @@ M.handle_layout = function(args)
 
 	for i = 0, (args.count - 1) do
 		table.insert(retval, {
-			GAPS + i * OFFSET,
-			GAPS + i * OFFSET,
-			(args.width - GAPS * 2) - (args.count - 1) * OFFSET,
-			(args.height - GAPS * 2) - (args.count - 1) * OFFSET,
+			OUTER_GAPS + i * OFFSET,
+			OUTER_GAPS + i * OFFSET,
+			(args.width - OUTER_GAPS * 2) - (args.count - 1) * OFFSET,
+			(args.height - OUTER_GAPS * 2) - (args.count - 1) * OFFSET,
 		})
 	end
 

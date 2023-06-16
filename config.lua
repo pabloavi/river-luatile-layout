@@ -7,7 +7,9 @@ M.load = function(args)
 	-- and we would need to know which layout to load
 	local fallback = {
 		MAIN_RATIO = 0.5,
-		GAPS = 10,
+		GAPS = 10, -- TODO: deprecate
+		INNER_GAPS = 10,
+		OUTER_GAPS = 10,
 		SMART_GAPS = true,
 		MAIN_COUNT = 2,
 		PREFER_HORIZONTAL = false,

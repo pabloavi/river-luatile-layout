@@ -60,27 +60,28 @@ function cycle_layout(prev)
 	local prev_layout = nil
 	local found = false
 
-	-- go through all layouts and find the next one (latest cycles back to first)
 	for i, layout in ipairs(layout_names) do
 		if found then
 			next_layout = layout
+			prev_layout = layout_names[i - 2] or layout_names[#layout_names]
 			break
 		end
 		if layout == current_layout then
 			found = true
 		end
-		prev_layout = layout_names[i - 1] or layout_names[#layout_names]
 	end
 
-	-- if no next layout was found, use the first one
-	if next_layout == nil then
+	if not next_layout then
 		next_layout = layout_names[1]
+	end
+	if not prev_layout then
+		prev_layout = layout_names[#layout_names - 1]
 	end
 
 	if prev then
-		OUTPUT_LAYOUTS[CMD_OUTPUT] = next_layout
-	else
 		OUTPUT_LAYOUTS[CMD_OUTPUT] = prev_layout
+	else
+		OUTPUT_LAYOUTS[CMD_OUTPUT] = next_layout
 	end
 	config.load({ CMD_OUTPUT, OUTPUT_LAYOUTS[CMD_OUTPUT] })
 end

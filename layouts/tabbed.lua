@@ -1,15 +1,7 @@
 local M = {}
 
-local utils = require("layouts.utils")
-
 M.handle_layout = function(args)
 	local retval = {}
-
-	--
-	local height_for_n = function(n)
-		return utils.height_for_n(args, n)
-	end
-	--
 
 	if args.count == 1 then
 		if SMART_GAPS then
@@ -19,21 +11,33 @@ M.handle_layout = function(args)
 		end
 	elseif args.count > 1 then
 		local main_w = (args.width - 2 * OUTER_GAPS - INNER_GAPS) * MAIN_RATIO
-		local side_w = (args.width - 2 * OUTER_GAPS - INNER_GAPS) - main_w
-		local main_h = args.height - OUTER_GAPS * 2
-		local side_h = height_for_n(args.count - 1)
+		local side_w = (args.width - 2 * OUTER_GAPS - INNER_GAPS) * (1 - MAIN_RATIO)
+
+		local x
+		if PREFER_RIGHT then
+			x = OUTER_GAPS + main_w * (1 / MAIN_RATIO - 1)
+		else
+			x = OUTER_GAPS
+		end
+
 		table.insert(retval, {
-			OUTER_GAPS,
+			x,
 			OUTER_GAPS,
 			main_w,
-			main_h,
+			args.height - OUTER_GAPS * 2,
 		})
-		for i = 0, (args.count - 2) do
+
+		for i = 1, (args.count - 1) do
+			if PREFER_RIGHT then
+				x = OUTER_GAPS
+			else
+				x = OUTER_GAPS + main_w + INNER_GAPS
+			end
 			table.insert(retval, {
-				main_w + OUTER_GAPS + INNER_GAPS,
-				OUTER_GAPS + i * (side_h + INNER_GAPS),
-				side_w,
-				side_h,
+				x,
+				OUTER_GAPS + (i - 1) * OFFSET,
+				side_w - OUTER_GAPS,
+				(args.height - OUTER_GAPS * 2) - (args.count - 2) * OFFSET,
 			})
 		end
 	end
