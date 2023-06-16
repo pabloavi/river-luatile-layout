@@ -100,7 +100,7 @@ It is important to note that all variables are parsed to Lua as global variables
 
 ## Layouts
 
-<!-- Add images -->
+(Using Waybar and a modified version of One Dark Pro colorscheme, by NvChad).
 
 ### BSPWM (dwindle)
 
@@ -110,11 +110,15 @@ Default             |  Reverse
 
 ### Centered
 
-Default             |  Reverse
+Notice in the second image that the split comes first to the right side (that's what `REVERSE` does in this layout). When using more than one main (`MAIN_COUNT>1`) the horizontal/vertical flag becomes useful.
+
+Default, 1 main             |  Reverse, 2 main, `PREFER_HORIZONTAL = true`
 :-------------------------:|:-------------------------:
 ![centered](https://github.com/pabloavi/river-luatile-layout/assets/107482263/5d5ebd1a-ad08-4fb0-ae11-4d4413306fca) |  ![centered_2_reverse](https://github.com/pabloavi/river-luatile-layout/assets/107482263/73cf625e-b04e-444d-8223-a786917cca78)
 
 ### Grid
+
+In grid layout, we never let empty spaces around the screen. Therefore, the parameter `PREFER_HORIZONTAL` is provided to choose how to cover that space maximizing space of windows horizontally or vertically.
 
 Prefer horizontal             | Prefer vertical
 :-------------------------:|:-------------------------:
@@ -122,23 +126,31 @@ Prefer horizontal             | Prefer vertical
 
 ### Monocle
 
-<!-- Add credits -->
+**MADE BY [pinpox](https://gist.github.com/pinpox)**, [monocle](https://gist.github.com/pinpox/4f6aa07aacefc2731b7ad8dfb349bdaf)
+
+Just *almost* maximized windows; notice the offset of windows top-right and the border of main window.
 
 ![monocle](https://github.com/pabloavi/river-luatile-layout/assets/107482263/581bb092-1adc-4c82-92a9-eb66e5ba1bdc)
 
 ### Rivertile
 
-<!-- Add credits -->
+**MADE BY [KMIJPH](https://codeberg.org/KMIJPH)**, [rivertile](https://codeberg.org/KMIJPH/dotfiles/src/branch/main/config/river-luatile/layout.lua). Slightly modified to not have empty space and to support `SMART_GAPS = true`.
+
+The basic rivertile layout, with option to use more than one main window, and place them top/bottom and left/right.
 
 ![rivertile](https://github.com/pabloavi/river-luatile-layout/assets/107482263/fe533da4-22f7-4bc5-8779-659dd6093b63)
 
 ### Rivertile-simple
 
-<!-- Add credits (default of river-luatile) -->
+**MADE BY [MaxVerevkin](https://github.com/MaxVerevkin)**, [rivertile_simple](https://github.com/MaxVerevkin/river-luatile/blob/master/layout.lua)
+
+The default layout of `river-luatile`, with no option to use more than one main window or modify its placement.
 
 ![rivertile_simple](https://github.com/pabloavi/river-luatile-layout/assets/107482263/2c7cb6d0-779e-4434-bf50-21e2373bc2cb)
 
 ### Tabbed (although no tab)
+
+It can be set to keep the main window left or right. Notice that the space in left-bottom of the screen; the windows can be seen with a vertical offset. In the second image, the fourth window is selected, to see that it can be changed.
 
 View 1 & 2             | View 1 & 4
 :-------------------------:|:-------------------------:
@@ -146,7 +158,7 @@ View 1 & 2             | View 1 & 4
 
 ## TODO
 
-- [ ] Finish `README.md`
+- [ ] Finish `README.md`.
 - [ ] Add support for `MAIN_COUNT` in `bspwm` layout.
 - [x] Add reverse options for `bspwm` layout and `centered`.
 - [ ] Improve `centered` split when there are less windows than `MAIN_COUNT`.
