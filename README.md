@@ -100,7 +100,7 @@ It is important to note that all variables are parsed to Lua as global variables
 
 ## Layouts
 
-(Using Waybar and a modified version of One Dark Pro colorscheme, by NvChad).
+(Using Waybar and a modified version of One Dark Pro colorscheme, by [NvChad](https://nvchad.com/)).
 
 ### BSPWM (dwindle)
 
