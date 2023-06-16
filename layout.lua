@@ -1,23 +1,33 @@
--- TODO: add multi-monitor support
--- TODO: add grid layout
 package.path = package.path .. ";" .. os.getenv("HOME") .. "/.config/river-luatile/?.lua"
 
 OUTPUT_LAYOUTS = {}
--- output_layouts["DP-1"] = "centered"
--- output_layouts["DP-2"] = "bspwm"
-OUTPUT_LAYOUTS["eDP-1"] = "centered"
-
--- read config
+local CMD_OUTPUT = "eDP-1" -- TODO: get rid of this
 local config = require("config")
-
 config.load({ "eDP-1" })
+
+layouts = {}
+for layout in
+	io.popen(
+		[[ls -1 ]] .. os.getenv("HOME") .. [[/.config/river-luatile/layouts | grep -E ".*\.lua$" | sed -e "s/\.lua$//"]]
+	)
+		:lines()
+do
+	if layout ~= "utils" then
+		layouts[layout] = require("layouts." .. layout).handle_layout
+	end
+end
+
+layout_names = {}
+for layout, _ in pairs(layouts) do
+	table.insert(layout_names, layout)
+end
+table.sort(layout_names)
 
 function handle_metadata(args)
 	return { name = OUTPUT_LAYOUTS[args.output] }
 end
 
 function handle_layout(args)
-	-- print(args.output)
 	return layouts[OUTPUT_LAYOUTS[args.output]](args)
 end
 
@@ -38,16 +48,14 @@ function switch_layout(layout_name)
 		return
 	end
 
-	-- TODO: add support for multiple outputs
-	OUTPUT_LAYOUTS["eDP-1"] = layout_name
-	config.load({ "eDP-1", OUTPUT_LAYOUTS["eDP-1"] })
+	OUTPUT_LAYOUTS[CMD_OUTPUT] = layout_name
+	config.load({ CMD_OUTPUT, OUTPUT_LAYOUTS["eDP-1"] })
 	os.execute("notify-send 'RiverWM' 'Switched to layout " .. layout_name .. "'")
 end
 
 -- cycle through layouts
 function cycle_layout(prev)
-	-- TODO: add support for multiple outputs
-	local current_layout = OUTPUT_LAYOUTS["eDP-1"]
+	local current_layout = OUTPUT_LAYOUTS[CMD_OUTPUT]
 	local next_layout = nil
 	local prev_layout = nil
 	local found = false
@@ -70,11 +78,11 @@ function cycle_layout(prev)
 	end
 
 	if prev then
-		OUTPUT_LAYOUTS["eDP-1"] = next_layout
+		OUTPUT_LAYOUTS[CMD_OUTPUT] = next_layout
 	else
-		OUTPUT_LAYOUTS["eDP-1"] = prev_layout
+		OUTPUT_LAYOUTS[CMD_OUTPUT] = prev_layout
 	end
-	config.load({ "eDP-1", OUTPUT_LAYOUTS["eDP-1"] })
+	config.load({ CMD_OUTPUT, OUTPUT_LAYOUTS[CMD_OUTPUT] })
 end
 
 function list_layouts()
@@ -83,26 +91,6 @@ function list_layouts()
 	os.execute("echo '" .. string .. "' > /tmp/river_layouts")
 end
 
-layouts = {
-	centered = require("layouts.centered").handle_layout,
-	bspwm = require("layouts.bspwm"),
-	rivertile_simple = require("layouts.rivertile_simple"),
-	rivertile = require("layouts.rivertile").handle_layout,
-	monocle = require("layouts.monocle"),
-	grid = require("layouts.grid").handle_layout,
-}
-
-layout_names = {}
-for layout, _ in pairs(layouts) do
-	table.insert(layout_names, layout)
-end
-table.sort(layout_names)
-
--- require functions from the layout file
--- print(output_layouts["eDP-1"])
--- require("layouts." .. output_layouts["eDP-1"])
-
--- EXTRA FUNCTIONS
 function main_count_up()
 	MAIN_COUNT = MAIN_COUNT + 1
 end

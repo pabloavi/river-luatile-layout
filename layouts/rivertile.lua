@@ -1,5 +1,7 @@
 local M = {}
 
+local utils = require("layouts.utils")
+
 local outer_gap = GAPS / 2
 local inner_gap = GAPS / 2
 local location_horizontal = "left"
@@ -10,6 +12,15 @@ local count = 0
 --@param args: table{width, height, count, tags}
 M.handle_layout = function(args)
 	local layout = {}
+
+	--
+	local height_for_n = function(n)
+		return utils.height_for_n(args, n)
+	end
+	local y_of_i = function(n, i)
+		return utils.y_of_i(args, n, i)
+	end
+	--
 
 	local windows = math.min(MAIN_COUNT, args.count)
 	if args.count == 1 then
@@ -23,16 +34,6 @@ M.handle_layout = function(args)
 		local side_w = (args.width - GAPS * 3) - main_w
 		local main_h = args.height - GAPS * 2
 		local side_h = (args.height - GAPS) / (args.count - 1) - GAPS
-		-- given n windows on a side, return the height of each window
-		local function height_for_n(n)
-			return (args.height - GAPS * (n + 1)) / n
-		end
-
-		-- given n windows on a side, return the height of i-th window
-		local function y_of_i(n, i)
-			return GAPS * i + height_for_n(n) * (i - 1)
-		end
-
 		for i = 1, windows do
 			table.insert(layout, {
 				GAPS,

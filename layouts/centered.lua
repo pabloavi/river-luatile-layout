@@ -1,4 +1,5 @@
 local M = {}
+local utils = require("layouts.utils")
 
 -- Layout for N windows
 -- N = 2                       ---------------
@@ -11,15 +12,19 @@ local M = {}
 
 M.handle_layout = function(args)
 	local retval = {}
-	-- given n windows on a side, return the height of each window
-	local function height_for_n(n)
-		return (args.height - GAPS * (n + 1)) / n
-	end
 
-	-- given n windows on a side, return the height of i-th window
-	local function y_of_i(n, i)
-		return GAPS * i + height_for_n(n) * (i - 1)
+	--
+	local height_for_n = function(n)
+		return utils.height_for_n(args, n)
 	end
+	local y_of_i = function(n, i)
+		return utils.y_of_i(args, n, i)
+	end
+	local revert = function(return_of_layout)
+		return utils.revert(args, return_of_layout)
+	end
+	--
+
 	-- Let N be the number of windows
 	-- N = 1 and N = 2 are special cases
 	if args.count == 1 then
@@ -118,10 +123,7 @@ M.handle_layout = function(args)
 	end
 
 	if REVERSE then
-		-- mirror the layout with respect to the center of the screen (x axis)
-		for _, v in ipairs(retval) do
-			v[1] = args.width - v[1] - v[3]
-		end
+		retval = revert(retval)
 	end
 	return retval
 end

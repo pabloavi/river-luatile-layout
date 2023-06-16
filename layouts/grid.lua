@@ -1,4 +1,5 @@
 local M = {}
+local utils = require("layouts.utils")
 
 -- calculate windows per row given n windows
 local function windows_per_rows(n)
@@ -19,6 +20,21 @@ end
 
 M.handle_layout = function(args)
 	local retval = {}
+	--
+	local height_for_n = function(n)
+		return utils.height_for_n(args, n)
+	end
+	local y_of_i = function(n, i)
+		return utils.y_of_i(args, n, i)
+	end
+	local width_for_n = function(n)
+		return utils.width_for_n(args, n)
+	end
+	local x_of_i = function(n, i)
+		return utils.x_of_i(args, n, i)
+	end
+	--
+
 	-- Let N be the number of windows
 	-- N = 1 and N = 2 are special cases
 	if args.count == 1 then
@@ -28,25 +44,6 @@ M.handle_layout = function(args)
 			table.insert(retval, { GAPS, GAPS, args.width - GAPS * 2, args.height - GAPS * 2 })
 		end
 	elseif args.count > 1 then
-		local function height_for_n(n)
-			-- given n windows on a side, return the height of each window
-			return (args.height - GAPS * (n + 1)) / n
-		end
-
-		local function y_of_i(n, i)
-			-- given n windows on a side, return the height of i-th window
-			return GAPS * i + height_for_n(n) * (i - 1)
-		end
-
-		local function width_for_n(n)
-			-- given n windows on a row, return the width of each window
-			return (args.width - GAPS * (n + 1)) / n
-		end
-
-		local function x_of_i(n, i)
-			-- given n windows on a row, return the x position of i-th window
-			return GAPS * i + width_for_n(n) * (i - 1)
-		end
 		local n = math.ceil(math.sqrt(args.count))
 
 		if PREFER_HORIZONTAL then

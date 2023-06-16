@@ -1,4 +1,11 @@
-local function handle_layout(args)
+local M = {}
+M.handle_layout = function(args)
+	--
+	local revert = function(retval)
+		return require("layouts.utils").revert(args, retval)
+	end
+	--
+
 	local retval = {}
 	if args.count == 1 then
 		if SMART_GAPS then
@@ -90,11 +97,10 @@ local function handle_layout(args)
 	end
 
 	if REVERSE then
-		for _, v in ipairs(retval) do
-			v[1] = args.width - v[1] - v[3]
-		end
+		retval = revert(retval)
 	end
+
 	return retval
 end
 
-return handle_layout
+return M

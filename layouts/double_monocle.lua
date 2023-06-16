@@ -2,6 +2,8 @@ local M = {}
 
 M.handle_layout = function(args)
 	local retval = {}
+	PREFER_RIGHT = false
+
 	if args.count == 1 then
 		if SMART_GAPS then
 			table.insert(retval, { 0, 0, args.width, args.height })
@@ -10,21 +12,33 @@ M.handle_layout = function(args)
 		end
 	elseif args.count > 1 then
 		local main_w = (args.width - GAPS * 3) * MAIN_RATIO
-		local side_w = (args.width - GAPS * 3) - main_w
-		local main_h = args.height - GAPS * 2
-		local side_h = (args.height - GAPS) / (args.count - 1) - GAPS
+		local side_w = (args.width - GAPS * 3) * (1 - MAIN_RATIO)
+
+		local x
+		if PREFER_RIGHT then
+			x = GAPS + main_w * (1 / MAIN_RATIO - 1)
+		else
+			x = GAPS
+		end
+
 		table.insert(retval, {
-			GAPS,
+			x,
 			GAPS,
 			main_w,
-			main_h,
+			args.height - GAPS * 2,
 		})
-		for i = 0, (args.count - 2) do
+
+		for i = 1, (args.count - 1) do
+			if PREFER_RIGHT then
+				x = GAPS
+			else
+				x = 2 * GAPS + main_w
+			end
 			table.insert(retval, {
-				main_w + GAPS * 2,
-				GAPS + i * (side_h + GAPS),
-				side_w,
-				side_h,
+				x,
+				GAPS + (i - 1) * OFFSET,
+				side_w - GAPS,
+				(args.height - GAPS * 2) - (args.count - 2) * OFFSET,
 			})
 		end
 	end

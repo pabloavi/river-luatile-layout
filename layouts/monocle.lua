@@ -1,4 +1,6 @@
-local function handle_layout(args)
+local M = {}
+
+M.handle_layout = function(args)
 	local retval = {}
 
 	for i = 0, (args.count - 1) do
@@ -9,7 +11,8 @@ local function handle_layout(args)
 			(args.height - GAPS * 2) - (args.count - 1) * OFFSET,
 		})
 	end
+
 	return retval
 end
 
-return handle_layout
+return M
