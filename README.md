@@ -6,7 +6,7 @@ Pack of river layouts using river-luatile.
 
 ## Installation
 
-Install river-luatile, and after that clone this project into its config directory (as this is only a config).
+Install [river-luatile](https://github.com/MaxVerevkin/river-luatile), and after that clone this project into its config directory (as this is only a config).
 
 ```bash
 git clone https://github.com/pabloavi/river-luatile-layout.git ~/.config/river-luatile
@@ -40,7 +40,7 @@ These are just examples, all available functions are listed in the Table below.
 | `toggle_gaps()`    | Toggles gaps to standard value or 0.     |
 | `switch_layout()`  | Switches to the next layout.             |
 | `cycle_layout(bool)`   | Cycles through all layouts. If argument is `true`, it sets the layout to previous one; therefore, `cycle_layout()` goes to next layout.|
-| `list_layouts()`   | Lists all available layouts.             |
+| `list_layouts()`   | Prints all available layouts alphabetically in `/tmp/river_layouts`.             |
 | `main_count_up()`  | Increases the number of main windows.    |
 | `main_count_down()`| Decreases the number of main windows.    |
 | `main_ratio_up()`  | Increases the ratio of the main area.    |
