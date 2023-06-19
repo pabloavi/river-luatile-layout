@@ -187,7 +187,6 @@ View 1 & 2             | View 1 & 4
 
 In order of priority:
 
-- [ ] Add support for per-tag layouts.
 - [ ] Add support for `SMART_BORDERS`.
 - [ ] Finish `README.md`.
 - [ ] Add full support of `INNER_GAPS` and `OUTER_GAPS`.
