@@ -1,10 +1,17 @@
 package.path = package.path .. ";" .. os.getenv("HOME") .. "/.config/river-luatile/?.lua"
 
+-- SET STARTING VALUES. WILL BE OVERWRITTEN
+CURRENT_TAGS = 1
 OUTPUT_LAYOUTS = {}
 local CMD_OUTPUT = "eDP-1" -- TODO: get rid of this
 local config = require("config")
-config.load({ "eDP-1" })
+config.load({ monitor = "eDP-1", tags = CURRENT_TAGS }) -- NOTE: just to have a default
 
+if not REMEMBER then
+	config.write_tags_from_config()
+end
+
+-- GET LAYOUTS FROM ./layouts/
 layouts = {}
 for layout in
 	io.popen(
@@ -23,14 +30,35 @@ for layout, _ in pairs(layouts) do
 end
 table.sort(layout_names)
 
+-- LAYOUT IMPLEMENTATION
 function handle_metadata(args)
 	return { name = OUTPUT_LAYOUTS[args.output] }
 end
 
 function handle_layout(args)
+	CURRENT_TAGS = args.tags -- export tags to global
+
+	function flip(prev)
+		if not prev then
+			for _ = 0, args.count do
+				os.execute("riverctl swap next")
+			end
+			os.execute("riverctl focus-view previous")
+		else
+			for _ = 0, args.count do
+				os.execute("riverctl swap previous")
+			end
+			os.execute("riverctl focus-view next")
+		end
+	end
+
+	config.load({ monitor = args.output, layout = config.get_tags(CURRENT_TAGS, args.output), tags = CURRENT_TAGS })
+	config.store_tags(CURRENT_TAGS, OUTPUT_LAYOUTS[args.output], args.output)
+
 	return layouts[OUTPUT_LAYOUTS[args.output]](args)
 end
 
+-- EXTRA FUNCTIONS
 local gaps_alt = 0
 function toggle_gaps()
 	local tmp = GAPS
@@ -49,7 +77,8 @@ function switch_layout(layout_name)
 	end
 
 	OUTPUT_LAYOUTS[CMD_OUTPUT] = layout_name
-	config.load({ CMD_OUTPUT, OUTPUT_LAYOUTS["eDP-1"] })
+	config.store_tags(CURRENT_TAGS, OUTPUT_LAYOUTS[CMD_OUTPUT], CMD_OUTPUT)
+	config.load({ monitor = CMD_OUTPUT, layout = config.get_tags(CURRENT_TAGS, CMD_OUTPUT), tags = CURRENT_TAGS })
 	os.execute("notify-send 'RiverWM' 'Switched to layout " .. layout_name .. "'")
 end
 
@@ -83,7 +112,7 @@ function cycle_layout(prev)
 	else
 		OUTPUT_LAYOUTS[CMD_OUTPUT] = next_layout
 	end
-	config.load({ CMD_OUTPUT, OUTPUT_LAYOUTS[CMD_OUTPUT] })
+	config.store_tags(CURRENT_TAGS, OUTPUT_LAYOUTS[CMD_OUTPUT], CMD_OUTPUT)
 end
 
 function list_layouts()
@@ -123,4 +152,46 @@ end
 
 function toggle_prefer_horizontal()
 	PREFER_HORIZONTAL = not PREFER_HORIZONTAL
+end
+
+-- TODO: add these to README.md
+function toggle_prefer_right()
+	PREFER_RIGHT = not PREFER_RIGHT
+end
+
+function toggle_reverse()
+	REVERSE = not REVERSE
+end
+
+function gaps(inner, up)
+	if inner == "inner" then
+		inner = true
+	else
+		inner = false
+	end
+	if up == "up" then
+		up = true
+	else
+		up = false
+	end
+
+	if inner then
+		if up then
+			INNER_GAPS = INNER_GAPS + 5
+		else
+			if INNER_GAPS < 5 then
+				return
+			end
+			INNER_GAPS = INNER_GAPS - 5
+		end
+	else
+		if up then
+			OUTER_GAPS = OUTER_GAPS + 5
+		else
+			if OUTER_GAPS < 5 then
+				return
+			end
+			OUTER_GAPS = OUTER_GAPS - 5
+		end
+	end
 end

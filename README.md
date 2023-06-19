@@ -24,6 +24,12 @@ Pack of river layouts using river-luatile.
 
 ## Features <a id="sec-features" name="sec-features"></a>
 
+- [x] A lot of layouts.
+- [x] Configuration file that reloads on window open/close.
+- [x] Functions to be used inside mappings.
+- [x] Per-monitor configuration.
+- [x] Per-tag layout: remember the layout of each tag, even on restart.
+
 ## Installation <a id="sec-installation" name="sec-installation"></a>
 
 Install [river-luatile](https://github.com/MaxVerevkin/river-luatile), and after that clone this project into its config directory (as this is only a config).
