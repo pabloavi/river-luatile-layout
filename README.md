@@ -19,7 +19,7 @@ Pack of river layouts using river-luatile.
   - [Monocle](#sec-monocle)
   - [Rivertile](#sec-rivertile)
   - [Rivertile-simple](#sec-rivertile-simple)
-  - [Tagged](#sec-tagged)
+  - [Tabbed](#sec-tabbed)
 - [TODO](#sec-todo)
 
 ## Features <a id="sec-features" name="sec-features"></a>
