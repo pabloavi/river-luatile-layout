@@ -1,3 +1,7 @@
+---
+lang: en
+---
+
 # river-luatile-layout
 
 WORK IN PROGRESS. LOTS OF BREAKING CHANGES TO BE MADE.
@@ -187,9 +191,11 @@ View 1 & 2             | View 1 & 4
 
 In order of priority:
 
+- [ ] Add bring to front function in `tabbed` (not to main window).
+- [ ] FIX cmd functions not working. Solution: full rewrite of config process.
 - [ ] Add support for `SMART_BORDERS`.
 - [ ] Finish `README.md`.
 - [ ] Add full support of `INNER_GAPS` and `OUTER_GAPS`.
-- [ ] Improve `centered` split when there are less windows than `MAIN_COUNT`.
+- [ ] Improve `centered` split when there are fewer windows than `MAIN_COUNT`.
 - [ ] Refactor `bspwm` layout, as it is dirty (even though it perfectly works).
 - [ ] Add support for `MAIN_COUNT` in `bspwm` layout.

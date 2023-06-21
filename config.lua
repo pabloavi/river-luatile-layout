@@ -1,70 +1,5 @@
 local M = {}
 
----Load the config file and set the global variables.
----If no layout is given, the layout from the config file will be used.
----If a layout is given, it has priority.
----@param args table
-M.load = function(args)
-	local monitor = args.monitor
-	local layout = args.layout
-	-- we are also receiving layout because this function may also be called to change layout,
-	-- and we would need to know which layout to load
-	local fallback = {
-		MAIN_RATIO = 0.5,
-		GAPS = 10, -- TODO: deprecate
-		INNER_GAPS = 10,
-		OUTER_GAPS = 10,
-		SMART_GAPS = true,
-		MAIN_COUNT = 2,
-		OFFSET = 20,
-		PREFER_HORIZONTAL = false,
-		REVERSE = false,
-	}
-	-- convert all values in fallback to globals
-	for k, v in pairs(fallback) do
-		_G[k] = v
-	end
-
-	-- parse config file
-	local json = require("json")
-	local file = io.open(os.getenv("HOME") .. "/.config/river/config.json", "r")
-	if not file then
-		return
-	end
-	local config
-	config = json.decode(file:read("*all"))
-	file:close()
-
-	-- convert all values in default to globals
-	local default_config = config["layout"]["default"]
-	for k, v in pairs(default_config) do
-		_G[k] = v
-	end
-
-	-- if layout is given, use it; else, use the layout from the config
-	local monitor_config = config["layout"][monitor]
-	if not monitor_config then
-		return
-	end
-	layout = layout or monitor_config["layout"] or default_config["layout"] or "centered"
-
-	-- overwrite default config with monitor config
-	if monitor_config["override"][layout] then
-		for k, v in pairs(monitor_config["override"][layout]) do
-			_G[k] = v
-		end
-	end
-
-	-- tags variables
-	local tags_fallback = {
-		TAGS_PATH = "/tmp/river_tags",
-	}
-	TAGS_PATH = config["tags"]["TAGS_PATH"]:gsub("~", os.getenv("HOME")) or tags_fallback["TAGS_PATH"]
-	REMEMBER = config["tags"]["REMEMBER"]
-
-	OUTPUT_LAYOUTS[monitor] = layout
-end
-
 ---Store the layout for a given tag and monitor.
 ---@param tags number
 ---@param layout string
@@ -109,11 +44,12 @@ end
 ---@param tags number
 ---@param monitor string
 ---@return string|nil
-M.get_tags = function(tags, monitor)
+M.get_layout_from_tagfile = function(tags, monitor)
 	local file = io.open(TAGS_PATH, "r")
 	if not file then
 		return
 	end
+	print(TAGS_PATH)
 	for line in file:lines() do
 		-- allow underscores
 		local line_tag, line_layout, line_monitor = line:match("(%d+) ([%w_]+) ([%w-]+)")
@@ -171,6 +107,75 @@ M.write_tags_from_config = function()
 			file:write(tag .. " " .. layout .. " " .. monitor .. "\n")
 		end
 		::continue::
+	end
+end
+
+--NEW METHOD
+---Read the config file and store all the information in a single big table for each monitor and layout.
+M.get_config = function()
+	local json = require("json")
+	local file = io.open(os.getenv("HOME") .. "/.config/river/config.json", "r")
+	if not file then
+		return
+	end
+
+	local config = json.decode(file:read("*all"))
+	file:close()
+	return config
+end
+
+---Given a layout, return a table with its options.
+---@param config table the "layout" field of the config file
+---@param monitor string the monitor name
+---@param layout string the layout name
+M.get_layout_options = function(config, monitor, layout)
+	local fallback = {
+		MAIN_RATIO = 0.5,
+		GAPS = 10, -- TODO: deprecate
+		INNER_GAPS = 10,
+		OUTER_GAPS = 10,
+		SMART_GAPS = true,
+		MAIN_COUNT = 2,
+		OFFSET = 20,
+		PREFER_HORIZONTAL = false,
+		REVERSE = false,
+	}
+
+	local layout_table = {}
+	for k, v in pairs(fallback) do
+		layout_table[k] = v
+	end
+
+	local defaults = config["default"]
+	local override = config[monitor]["override"][layout]
+
+	for k, v in pairs(defaults) do
+		layout_table[k] = v
+	end
+
+	if override then
+		for k, v in pairs(override) do
+			layout_table[k] = v
+		end
+	end
+
+	return layout_table
+end
+
+---Set the layout options as global variables.
+---@param config table the "layout" field of the config file
+---@param monitor string the monitor name
+---@param layout string the layout name
+---@see get_layout_options
+M.set_layout_options = function(config, monitor, layout)
+	local layout_table = M.get_layout_options(config, monitor, layout)
+
+	for k, v in pairs(layout_table) do
+		_G[k] = v
+	end
+
+	for k, v in pairs(OVERRIDEN_OPTIONS) do
+		_G[k] = v
 	end
 end
 
