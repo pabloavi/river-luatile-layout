@@ -1,7 +1,3 @@
-#---
-#lang: en
-#---
-
 # river-luatile-layout
 
 WORK IN PROGRESS. LOTS OF BREAKING CHANGES TO BE MADE.
