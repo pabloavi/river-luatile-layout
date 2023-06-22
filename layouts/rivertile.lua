@@ -3,8 +3,6 @@ local M = {}
 
 local utils = require("layouts.utils")
 
-local location_horizontal = "left"
-local location_vertical = "top"
 local count = 0
 local OUTER_GAPS = OUTER_GAPS / 2
 local INNER_GAPS = INNER_GAPS / 2
@@ -48,9 +46,9 @@ M.handle_layout = function(args)
 
 		-- check whether monitor is vertical or horizontal
 		if args.width > args.height then
-			location = location_horizontal
+			location = LOCATION_HORIZONTAL
 		else
-			location = location_vertical
+			location = LOCATION_VERTICAL
 		end
 
 		if location == "left" or location == "right" then

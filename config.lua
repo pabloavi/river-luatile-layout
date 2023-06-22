@@ -49,7 +49,6 @@ M.get_layout_from_tagfile = function(tags, monitor)
 	if not file then
 		return
 	end
-	print(TAGS_PATH)
 	for line in file:lines() do
 		-- allow underscores
 		local line_tag, line_layout, line_monitor = line:match("(%d+) ([%w_]+) ([%w-]+)")
@@ -99,7 +98,6 @@ M.write_tags_from_config = function()
 		if monitor == "REMEMBER" or monitor == "TAGS_PATH" then
 			goto continue
 		end
-		print(monitor)
 		for tag, layout in pairs(tags[monitor]) do
 			if begins_with(tag, "i") then
 				tag = tonumber(2 ^ (tonumber(tag:sub(2)) - 1))
@@ -139,6 +137,8 @@ M.get_layout_options = function(config, monitor, layout)
 		OFFSET = 20,
 		PREFER_HORIZONTAL = false,
 		REVERSE = false,
+		LOCATION_VERTICAL = "top",
+		LOCATION_HORIZONTAL = "left",
 	}
 
 	local layout_table = {}
@@ -166,7 +166,6 @@ end
 ---@param config table the "layout" field of the config file
 ---@param monitor string the monitor name
 ---@param layout string the layout name
----@see get_layout_options
 M.set_layout_options = function(config, monitor, layout)
 	local layout_table = M.get_layout_options(config, monitor, layout)
 
@@ -177,6 +176,43 @@ M.set_layout_options = function(config, monitor, layout)
 	for k, v in pairs(OVERRIDEN_OPTIONS) do
 		_G[k] = v
 	end
+end
+
+---Returns the layout for a given tag and monitor and config.
+---@param config table the "layout" field of the config file
+---@param tags number
+---@param monitor string
+---@return string
+M.get_current_layout = function(config, tags, monitor)
+	return M.get_layout_from_tagfile(tags, monitor)
+		or config[monitor]["layout"]
+		or config["default"]["layout"]
+		or "centered"
+end
+
+---TODO: improve this function
+---Returns the layout names in alphabetical order
+---and sets the global variable "layouts" with the
+---handle_layout function of each layout.
+M.get_available_layouts = function()
+	for layout in
+		io.popen(
+			[[ls -1 ]]
+				.. os.getenv("HOME")
+				.. [[/.config/river-luatile/layouts | grep -E ".*\.lua$" | sed -e "s/\.lua$//"]]
+		):lines()
+	do
+		if layout ~= "utils" then
+			layouts[layout] = require("layouts." .. layout).handle_layout
+		end
+	end
+
+	layout_names = {}
+	for layout, _ in pairs(layouts) do
+		table.insert(layout_names, layout)
+	end
+	table.sort(layout_names)
+	return layout_names
 end
 
 return M

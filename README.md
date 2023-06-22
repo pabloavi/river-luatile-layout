@@ -181,7 +181,7 @@ The default layout of `river-luatile`, with no option to use more than one main 
 
 ### Tabbed (although no tab) <a id="sec-tabbed" name="sec-tabbed"></a>
 
-It can be set to keep the main window left or right. Notice that the space in left-bottom of the screen; the windows can be seen with a vertical offset. In the second image, the fourth window is selected, to see that it can be changed.
+It can be set to keep the main window left or right. Notice that the space in left-bottom of the screen; the windows can be seen with a vertical offset. In the second image, the fourth window is selected, to see that it can be changed. A function `bring_to_front()` is provided, to move the current window to the top of its "deck".
 
 View 1 & 2             | View 1 & 4
 :-------------------------:|:-------------------------:
@@ -191,11 +191,9 @@ View 1 & 2             | View 1 & 4
 
 In order of priority:
 
-- [ ] Add bring to front function in `tabbed` (not to main window).
-- [ ] FIX cmd functions not working. Solution: full rewrite of config process.
 - [ ] Add support for `SMART_BORDERS`.
 - [ ] Finish `README.md`.
-- [ ] Add full support of `INNER_GAPS` and `OUTER_GAPS`.
+- [ ] Add full support of `INNER_GAPS` and `OUTER_GAPS` (only remains `rivertile`).
 - [ ] Improve `centered` split when there are fewer windows than `MAIN_COUNT`.
 - [ ] Refactor `bspwm` layout, as it is dirty (even though it perfectly works).
 - [ ] Add support for `MAIN_COUNT` in `bspwm` layout.
