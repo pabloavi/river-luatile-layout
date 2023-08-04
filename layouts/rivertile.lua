@@ -26,7 +26,10 @@ M.handle_layout = function(args)
 		if SMART_GAPS then
 			table.insert(layout, { 0, 0, args.width, args.height })
 		else
-			table.insert(layout, { OUTER_GAPS, OUTER_GAPS, args.width - OUTER_GAPS * 2, args.height - OUTER_GAPS * 2 })
+			table.insert(
+				layout,
+				{ 2 * OUTER_GAPS, 2 * OUTER_GAPS, args.width - 2 * OUTER_GAPS * 2, args.height - 2 * OUTER_GAPS * 2 }
+			)
 		end
 	elseif args.count <= windows then
 		local main_w = (args.width - OUTER_GAPS * 2)
